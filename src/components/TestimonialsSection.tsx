@@ -28,7 +28,7 @@ export const TestimonialsSection: React.FC = () => {
       <div className="container">
         {/* Section Header */}
         <div className="section-header">
-          <span className="section-subtitle">Verified Feedback</span>
+          <span className="section-subtitle">Client Feedback</span>
           <h2 className="section-title">
             Client Love & <br />
             <span className="text-gold-gradient" style={{ fontStyle: 'italic' }}>
@@ -36,7 +36,7 @@ export const TestimonialsSection: React.FC = () => {
             </span>
           </h2>
           <p className="section-description">
-            Read reflections from our cherished clients who trust SHE Beauty Studio for healthy hair care, modern luxury ambiance, and dedicated mainland hospitality.
+            Reflections from clients who visit SHE Beauty Studio for healthy hair care, modern luxury ambiance, and dedicated mainland hospitality.
           </p>
         </div>
 
@@ -67,7 +67,7 @@ export const TestimonialsSection: React.FC = () => {
                 lineHeight: 1,
               }}
             >
-              4.9
+              {BUSINESS_INFO.rating.score}
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', marginBottom: '0.25rem' }}>
@@ -76,7 +76,7 @@ export const TestimonialsSection: React.FC = () => {
                 ))}
               </div>
               <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
-                Rated <strong>4.9★</strong> by customers on <strong>Google</strong>
+                Rated <strong>{BUSINESS_INFO.rating.score}★</strong> by customers on <strong>Google</strong>
               </div>
             </div>
           </div>
@@ -222,7 +222,7 @@ export const TestimonialsSection: React.FC = () => {
                 </button>
 
                 <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', minWidth: '45px', textAlign: 'center' }}>
-                  0{currentIndex + 1} / 0{TESTIMONIALS.length}
+                  {String(currentIndex + 1).padStart(2, '0')} / {String(TESTIMONIALS.length).padStart(2, '0')}
                 </span>
 
                 <button

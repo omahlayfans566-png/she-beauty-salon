@@ -15,6 +15,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreServices }) 
       style={{
         position: 'relative',
         minHeight: 'calc(100vh - 5.25rem)',
+        maxHeight: '960px',
         display: 'flex',
         alignItems: 'center',
         paddingTop: '2.5rem',
@@ -56,7 +57,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreServices }) 
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
             gap: '3.5rem',
             alignItems: 'center',
           }}
@@ -177,7 +178,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreServices }) 
                 borderRadius: 'var(--radius-lg)',
                 backgroundColor: 'rgba(255, 255, 255, 0.025)',
                 border: '1px solid var(--color-border-subtle)',
-                backdropFilter: 'blur(10px)',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
@@ -193,10 +193,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreServices }) 
               <div style={{ borderLeft: '1px solid rgba(255, 255, 255, 0.1)', paddingLeft: '1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                   <span style={{ fontWeight: 700, color: 'var(--color-text-primary)', fontSize: '0.95rem' }}>
-                    4.9 / 5.0
+                    {BUSINESS_INFO.rating.score} / {BUSINESS_INFO.rating.maxScore}
                   </span>
                   <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>
-                    (69+ Google Reviews)
+                    ({BUSINESS_INFO.rating.reviewCount}+ Google Reviews)
                   </span>
                 </div>
                 <div style={{ fontSize: '0.72rem', color: 'var(--color-gold-light)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -230,6 +230,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreServices }) 
               <img
                 src="/images/hero-editorial.jpg"
                 alt="SHE Beauty Studio luxury hair and beauty editorial, Ogudu Lagos"
+                fetchPriority="high"
+                loading="eager"
                 style={{
                   width: '100%',
                   height: 'auto',
@@ -262,8 +264,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreServices }) 
                   right: '1.5rem',
                   padding: '1rem 1.25rem',
                   borderRadius: 'var(--radius-md)',
-                  backgroundColor: 'rgba(15, 13, 11, 0.85)',
-                  backdropFilter: 'blur(16px)',
+                  backgroundColor: 'rgba(15, 13, 11, 0.92)',
                   border: '1px solid rgba(223, 190, 122, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
@@ -319,9 +320,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreServices }) 
                 right: '0',
                 padding: '0.75rem 1.25rem',
                 borderRadius: 'var(--radius-full)',
-                backgroundColor: 'rgba(20, 17, 14, 0.92)',
+                backgroundColor: 'rgba(20, 17, 14, 0.95)',
                 border: '1px solid var(--color-border-gold)',
-                backdropFilter: 'blur(16px)',
                 boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
                 display: 'flex',
                 alignItems: 'center',

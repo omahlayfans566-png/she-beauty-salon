@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Phone, MessageCircle, Menu, X, Clock, MapPin, Sparkles } from 'lucide-react';
 import { BUSINESS_INFO, getStudioStatus } from '../data/businessData';
 
@@ -9,25 +9,44 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(84); // 5.25rem default
   const status = getStudioStatus();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 40);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Track actual rendered header height for mobile drawer positioning
+  useEffect(() => {
+    const measure = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.getBoundingClientRect().height);
+      }
+    };
+    measure();
+    window.addEventListener('resize', measure, { passive: true });
+    return () => window.removeEventListener('resize', measure);
+  }, [isScrolled]);
+
+  // Close mobile menu on resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 960) setMobileMenuOpen(false);
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Trim nav to 6 items — merges "The Space" into page flow, keeps booking prominent
   const navLinks = [
     { label: 'About', href: '#about' },
     { label: 'Services', href: '#services' },
     { label: 'Rituals', href: '#rituals' },
-    { label: 'The Space', href: '#the-space' },
     { label: 'Reviews', href: '#reviews' },
     { label: 'Gallery', href: '#gallery' },
     { label: 'Location', href: '#location' },
@@ -43,6 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
   return (
     <header
+      ref={headerRef}
       style={{
         position: 'sticky',
         top: 0,
@@ -53,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
         borderBottom: isScrolled
           ? '1px solid rgba(223, 190, 122, 0.2)'
           : '1px solid rgba(255, 255, 255, 0.05)',
-        transition: 'all 0.35s ease',
+        transition: 'background-color 0.35s ease, border-color 0.35s ease, height 0.35s ease',
       }}
     >
       <div
@@ -66,14 +86,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           transition: 'height 0.35s ease',
         }}
       >
-        {/* Brand Logo / Monogram */}
+        {/* Brand Logo */}
         <a
           href="#"
+          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
             textDecoration: 'none',
+            flexShrink: 0,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
@@ -118,28 +140,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
         {/* Desktop Nav Links */}
         <nav
-          style={{
-            display: 'none',
-            alignItems: 'center',
-            gap: '2rem',
-          }}
+          style={{ display: 'none', alignItems: 'center', gap: '1.6rem' }}
           className="desktop-nav"
         >
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(link.href);
-              }}
+              onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
               style={{
                 color: 'var(--color-text-secondary)',
-                fontSize: '0.85rem',
+                fontSize: '0.82rem',
                 fontWeight: 500,
-                letterSpacing: '0.08em',
+                letterSpacing: '0.07em',
                 textTransform: 'uppercase',
-                position: 'relative',
                 padding: '0.25rem 0',
                 transition: 'color var(--transition-fast)',
               }}
@@ -153,11 +167,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
         {/* Desktop Right Actions */}
         <div
-          style={{
-            display: 'none',
-            alignItems: 'center',
-            gap: '1rem',
-          }}
+          style={{ display: 'none', alignItems: 'center', gap: '0.85rem' }}
           className="desktop-actions"
         >
           <a
@@ -168,12 +178,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               alignItems: 'center',
               gap: '0.4rem',
               color: 'var(--color-text-secondary)',
-              fontSize: '0.82rem',
+              fontSize: '0.8rem',
               fontWeight: 500,
               padding: '0.5rem 0.8rem',
               borderRadius: 'var(--radius-full)',
               border: '1px solid var(--color-border-subtle)',
               transition: 'all var(--transition-fast)',
+              flexShrink: 0,
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = 'var(--color-gold)';
@@ -191,20 +202,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           <button
             onClick={() => onOpenBooking()}
             className="btn-primary"
-            style={{
-              padding: '0.75rem 1.45rem',
-              fontSize: '0.8rem',
-            }}
+            style={{ padding: '0.72rem 1.35rem', fontSize: '0.78rem', flexShrink: 0 }}
           >
-            <Sparkles size={14} />
-            <span>Book Experience</span>
+            <Sparkles size={13} />
+            <span>Book</span>
           </button>
         </div>
 
-        {/* Mobile Hamburger Trigger */}
+        {/* Mobile Hamburger */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+          aria-expanded={mobileMenuOpen}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -222,13 +231,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
         </button>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu Drawer — top uses measured header height */}
       {mobileMenuOpen && (
         <div
           style={{
             position: 'fixed',
-            inset: 0,
-            top: '4.5rem',
+            left: 0,
+            right: 0,
+            top: `${headerHeight}px`,
+            bottom: 0,
             backgroundColor: 'rgba(10, 8, 7, 0.98)',
             backdropFilter: 'blur(20px)',
             zIndex: 80,
@@ -237,6 +248,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
             justifyContent: 'space-between',
             padding: '2rem 1.5rem 6rem 1.5rem',
             overflowY: 'auto',
+            overflowX: 'hidden',
             animation: 'fadeIn 0.25s ease-out forwards',
           }}
         >
@@ -263,13 +275,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               <a
                 key={link.label}
                 href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(link.href);
-                }}
+                onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                 style={{
                   fontFamily: 'var(--font-serif-display)',
-                  fontSize: '1.75rem',
+                  fontSize: 'clamp(1.5rem, 5vw, 1.75rem)',
                   color: 'var(--color-text-primary)',
                   borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
                   paddingBottom: '0.75rem',
@@ -280,7 +289,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               >
                 <span>{link.label}</span>
                 <span style={{ fontSize: '0.8rem', color: 'var(--color-gold)', opacity: 0.6 }}>
-                  0{idx + 1}
+                  {String(idx + 1).padStart(2, '0')}
                 </span>
               </a>
             ))}
@@ -288,10 +297,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
             <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenBooking();
-              }}
+              onClick={() => { setMobileMenuOpen(false); onOpenBooking(); }}
               className="btn-primary"
               style={{ width: '100%' }}
             >
@@ -330,15 +336,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
       <style>{`
         @media (min-width: 960px) {
-          .desktop-nav {
-            display: flex !important;
-          }
-          .desktop-actions {
-            display: flex !important;
-          }
-          .mobile-toggle {
-            display: none !important;
-          }
+          .desktop-nav { display: flex !important; }
+          .desktop-actions { display: flex !important; }
+          .mobile-toggle { display: none !important; }
         }
       `}</style>
     </header>

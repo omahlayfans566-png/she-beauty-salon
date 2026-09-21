@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Sparkles, Clock, ArrowRight, Check, Search, Tag } from 'lucide-react';
+import { Sparkles, Clock, ArrowRight, Check, Search } from 'lucide-react';
 import { SERVICES, ServiceItem } from '../data/businessData';
 
 interface ServicesSectionProps {
   onSelectService: (service: ServiceItem) => void;
 }
 
-type CategoryType = 'all' | 'hair' | 'nails-beauty' | 'wellness' | 'gentlemen';
+type CategoryType = 'all' | 'hair' | 'nails-beauty' | 'wellness';
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectService }) => {
   const [activeCategory, setActiveCategory] = useState<CategoryType>('all');
@@ -17,7 +17,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
     { id: 'hair', label: 'Hair Care & Artistry' },
     { id: 'nails-beauty', label: 'Nails & Skin' },
     { id: 'wellness', label: 'Wellness & Massage' },
-    { id: 'gentlemen', label: "Gentlemen's Care" },
   ];
 
   const filteredServices = SERVICES.filter((service) => {
@@ -56,43 +55,56 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
             marginBottom: '3rem',
           }}
         >
-          {/* Category Tabs */}
+          {/* Category Tabs — horizontally scrollable on mobile */}
           <div
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              gap: '0.65rem',
-              backgroundColor: 'rgba(23, 19, 16, 0.8)',
-              padding: '0.4rem',
-              borderRadius: 'var(--radius-full)',
-              border: '1px solid var(--color-border-subtle)',
-              backdropFilter: 'blur(12px)',
+              width: '100%',
+              overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch' as React.CSSProperties['WebkitOverflowScrolling'],
+              scrollbarWidth: 'none' as React.CSSProperties['scrollbarWidth'],
+              msOverflowStyle: 'none' as React.CSSProperties['msOverflowStyle'],
+              padding: '0.25rem 0',
             }}
+            className="services-tab-scroll"
           >
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id as CategoryType)}
-                style={{
-                  padding: '0.65rem 1.35rem',
-                  borderRadius: 'var(--radius-full)',
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  transition: 'all var(--transition-smooth)',
-                  backgroundColor:
-                    activeCategory === cat.id ? 'var(--color-gold)' : 'transparent',
-                  color: activeCategory === cat.id ? '#0A0807' : 'var(--color-text-secondary)',
-                  boxShadow:
-                    activeCategory === cat.id ? '0 4px 15px rgba(223, 190, 122, 0.3)' : 'none',
-                }}
-              >
-                {cat.label}
-              </button>
-            ))}
+            <div
+              style={{
+                display: 'flex',
+                gap: '0.55rem',
+                width: 'max-content',
+                margin: '0 auto',
+                backgroundColor: 'rgba(23, 19, 16, 0.8)',
+                padding: '0.4rem',
+                borderRadius: 'var(--radius-full)',
+                border: '1px solid var(--color-border-subtle)',
+              }}
+            >
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id as CategoryType)}
+                  style={{
+                    padding: '0.6rem 1.1rem',
+                    borderRadius: 'var(--radius-full)',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                    whiteSpace: 'nowrap',
+                    transition: 'all var(--transition-smooth)',
+                    backgroundColor:
+                      activeCategory === cat.id ? 'var(--color-gold)' : 'transparent',
+                    color: activeCategory === cat.id ? '#0A0807' : 'var(--color-text-secondary)',
+                    boxShadow:
+                      activeCategory === cat.id ? '0 4px 15px rgba(223, 190, 122, 0.3)' : 'none',
+                  }}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
           </div>
+          <style>{`.services-tab-scroll::-webkit-scrollbar { display: none; }`}</style>
 
           {/* Quick Search */}
           <div
@@ -132,18 +144,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
               onBlur={(e) => (e.target.style.borderColor = 'var(--color-border-subtle)')}
             />
           </div>
-        </div>
-
-        {/* Pricing Note */}
-        <div
-          style={{
-            textAlign: 'center',
-            marginBottom: '2rem',
-            fontSize: '0.78rem',
-            color: 'var(--color-text-muted)',
-          }}
-        >
-          <span>* Sample Fresha pricing shown for demo reference. Custom consultations and final quotes confirmed upon booking.</span>
         </div>
 
         {/* Services Grid */}
@@ -287,9 +287,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
                       color: 'var(--color-gold)',
                     }}
                   >
-                    {service.priceText.includes('₦')
-                      ? service.priceText.split('/')[0].trim()
-                      : service.priceText}
+                    {service.priceText}
                   </span>
                 </div>
 

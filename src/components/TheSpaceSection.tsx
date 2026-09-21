@@ -48,6 +48,7 @@ export const TheSpaceSection: React.FC<TheSpaceSectionProps> = ({ onOpenBooking 
           <img
             src="/images/studio-interior.jpg"
             alt="Interior atmosphere of SHE Beauty Studio at 163 Ogudu Road Lagos"
+            loading="lazy"
             style={{
               width: '100%',
               height: 'auto',
@@ -130,13 +131,13 @@ export const TheSpaceSection: React.FC<TheSpaceSectionProps> = ({ onOpenBooking 
             },
             {
               icon: <Eye size={22} style={{ color: 'var(--color-gold)' }} />,
-              title: 'Ergonomic Velvet Seating',
+              title: 'Comfortable Styling Stations',
               description: 'High-comfort seating that ensures total ease during braiding, loc maintenance, or color sessions.',
             },
             {
               icon: <ShieldCheck size={22} style={{ color: 'var(--color-gold)' }} />,
-              title: 'Impeccable Sanitation',
-              description: 'Hospital-grade autoclaves and sterilized single-use liners for every nail and skin treatment.',
+              title: 'Professional Sanitation',
+              description: 'Consistent hygiene and sanitation practices across all nail, skin, and hair treatment services.',
             },
           ].map((item, idx) => (
             <div

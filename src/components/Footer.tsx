@@ -72,7 +72,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
                 ))}
               </div>
               <span style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
-                4.9★ on Google (69+ reviews)
+                {BUSINESS_INFO.rating.score}★ on Google ({BUSINESS_INFO.rating.reviewCount}+ reviews)
               </span>
             </div>
           </div>
@@ -175,7 +175,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
           </div>
         </div>
 
-        {/* Concept Disclaimer & Copyright */}
+        {/* Copyright */}
         <div
           style={{
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
@@ -187,17 +187,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
             gap: '1.5rem',
           }}
         >
-          <div style={{ maxWidth: '640px' }}>
+          <div>
             <p style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', lineHeight: 1.6, margin: 0 }}>
-              <strong>Private Concept Presentation:</strong> This website is an independent digital concept demo created for <strong>SHE Beauty Studio</strong> (163 Ogudu Road, Ogudu, Lagos). All public business details, opening hours, and review excerpts reflect verified public listings.
+              &copy; {new Date().getFullYear()} SHE Beauty Studio. All rights reserved. &middot; 163 Ogudu Road, Ogudu, Lagos, Nigeria.
             </p>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>
-              &copy; {new Date().getFullYear()} SHE Beauty Studio Concept.
-            </span>
-
             <button
               onClick={scrollToTop}
               aria-label="Scroll to top of page"

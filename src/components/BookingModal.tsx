@@ -2,18 +2,11 @@ import React, { useState, useEffect } from 'react';
 import {
   X,
   Sparkles,
-  Calendar,
-  Clock,
-  User,
-  Phone,
   MessageCircle,
   CheckCircle2,
   ChevronRight,
   ChevronLeft,
-  ArrowRight,
-  ShieldCheck,
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { SERVICES, ServiceItem, TIME_SLOTS, BUSINESS_INFO, buildWhatsAppLink } from '../data/businessData';
 
 interface BookingModalProps {
@@ -36,17 +29,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [clientName, setClientName] = useState('');
   const [clientPhone, setClientPhone] = useState('');
   const [clientNote, setClientNote] = useState('');
-  const [contactViaWhatsApp, setContactViaWhatsApp] = useState(true);
 
-  // Update selected service if preSelectedService changes
   useEffect(() => {
     if (preSelectedService) {
       setSelectedService(preSelectedService);
-      setStep(2); // Jump directly to date/time selection if service was already chosen
+      setStep(2);
     }
   }, [preSelectedService]);
 
-  // Set default date to tomorrow if empty
   useEffect(() => {
     if (!selectedDate) {
       const tomorrow = new Date();
@@ -58,23 +48,23 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
   }, [selectedDate]);
 
+  // Clean up form when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setStep(1);
+      setClientName('');
+      setClientPhone('');
+      setClientNote('');
+      setSelectedTime(TIME_SLOTS[0]);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  const handleCompleteBooking = (e: React.FormEvent) => {
+  const handlePrepareDetails = (e: React.FormEvent) => {
     e.preventDefault();
     if (!clientName.trim() || !clientPhone.trim()) return;
-
     setStep(4);
-    try {
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#DFBE7A', '#C5A059', '#FAF7F2', '#A17A54'],
-      });
-    } catch {
-      // fallback if canvas-confetti is unavailable
-    }
   };
 
   const handleResetAndClose = () => {
@@ -138,7 +128,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           <X size={18} />
         </button>
 
-        {/* Step Progress Indicator */}
+        {/* Step Progress */}
         {step < 4 && (
           <div style={{ marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
@@ -149,7 +139,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 Step {step} of 3
               </span>
             </div>
-
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem', height: '4px', backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
               <div style={{ backgroundColor: step >= 1 ? 'var(--color-gold)' : 'transparent', transition: 'all 0.3s' }} />
               <div style={{ backgroundColor: step >= 2 ? 'var(--color-gold)' : 'transparent', transition: 'all 0.3s' }} />
@@ -161,14 +150,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         {/* STEP 1: Select Service */}
         {step === 1 && (
           <div>
-            <h3
-              style={{
-                fontFamily: 'var(--font-serif-display)',
-                fontSize: '1.85rem',
-                color: 'var(--color-text-primary)',
-                marginBottom: '0.4rem',
-              }}
-            >
+            <h3 style={{ fontFamily: 'var(--font-serif-display)', fontSize: '1.85rem', color: 'var(--color-text-primary)', marginBottom: '0.4rem' }}>
               Select Your Service
             </h3>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.88rem', marginBottom: '1.5rem' }}>
@@ -208,10 +190,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                       <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>
                         <span>Duration: {srv.duration}</span>
                         <span>&middot;</span>
-                        <span style={{ color: 'var(--color-gold)' }}>{srv.priceText.split('/')[0]}</span>
+                        <span style={{ color: 'var(--color-gold)' }}>{srv.priceText}</span>
                       </div>
                     </div>
-
                     <div
                       style={{
                         width: '20px',
@@ -222,6 +203,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        flexShrink: 0,
                       }}
                     >
                       {isSelected && <CheckCircle2 size={13} color="#0A0807" />}
@@ -237,7 +219,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               className="btn-primary"
               style={{ width: '100%', padding: '0.95rem' }}
             >
-              <span>Continue to Date & Time</span>
+              <span>Continue to Date &amp; Time</span>
               <ChevronRight size={16} />
             </button>
           </div>
@@ -246,38 +228,22 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         {/* STEP 2: Select Date & Time */}
         {step === 2 && (
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+            <div style={{ marginBottom: '1rem' }}>
               <button
                 onClick={() => setStep(1)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-gold)',
-                  fontSize: '0.8rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.3rem',
-                }}
+                style={{ background: 'none', border: 'none', color: 'var(--color-gold)', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
               >
                 <ChevronLeft size={14} /> Back to Services
               </button>
             </div>
 
-            <h3
-              style={{
-                fontFamily: 'var(--font-serif-display)',
-                fontSize: '1.85rem',
-                color: 'var(--color-text-primary)',
-                marginBottom: '0.3rem',
-              }}
-            >
-              Choose Date & Time
+            <h3 style={{ fontFamily: 'var(--font-serif-display)', fontSize: '1.85rem', color: 'var(--color-text-primary)', marginBottom: '0.3rem' }}>
+              Choose Date &amp; Time
             </h3>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
               Selected: <strong style={{ color: 'var(--color-gold-light)' }}>{selectedService?.name}</strong> ({selectedService?.duration})
             </p>
 
-            {/* Date Input */}
             <div className="form-group">
               <label className="form-label">Preferred Appointment Date</label>
               <input
@@ -289,13 +255,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 style={{ colorScheme: 'dark' }}
               />
               <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', marginTop: '0.3rem', display: 'block' }}>
-                * Studio is closed on Mondays. Sunday hours start at 12:30 PM.
+                Studio is closed on Mondays. Sunday hours start at 12:30 PM.
               </span>
             </div>
 
-            {/* Time Slot Picker */}
             <div className="form-group">
-              <label className="form-label">Available Preferred Time Slots</label>
+              <label className="form-label">Preferred Time</label>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '0.5rem' }}>
                 {TIME_SLOTS.map((time) => (
                   <button
@@ -308,12 +273,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                       fontSize: '0.82rem',
                       fontWeight: 600,
                       textAlign: 'center',
-                      backgroundColor:
-                        selectedTime === time ? 'var(--color-gold)' : 'rgba(255, 255, 255, 0.03)',
+                      backgroundColor: selectedTime === time ? 'var(--color-gold)' : 'rgba(255, 255, 255, 0.03)',
                       color: selectedTime === time ? '#0A0807' : 'var(--color-text-secondary)',
-                      border: `1px solid ${
-                        selectedTime === time ? 'var(--color-gold)' : 'rgba(255, 255, 255, 0.08)'
-                      }`,
+                      border: `1px solid ${selectedTime === time ? 'var(--color-gold)' : 'rgba(255, 255, 255, 0.08)'}`,
                       transition: 'all var(--transition-fast)',
                     }}
                   >
@@ -324,20 +286,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="btn-secondary"
-                style={{ flex: 1, padding: '0.9rem' }}
-              >
+              <button type="button" onClick={() => setStep(1)} className="btn-secondary" style={{ flex: 1, padding: '0.9rem' }}>
                 Back
               </button>
-              <button
-                type="button"
-                onClick={() => setStep(3)}
-                className="btn-primary"
-                style={{ flex: 2, padding: '0.9rem' }}
-              >
+              <button type="button" onClick={() => setStep(3)} className="btn-primary" style={{ flex: 2, padding: '0.9rem' }}>
                 <span>Continue to Your Details</span>
                 <ChevronRight size={16} />
               </button>
@@ -347,37 +299,22 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
         {/* STEP 3: Client Details */}
         {step === 3 && (
-          <form onSubmit={handleCompleteBooking}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+          <form onSubmit={handlePrepareDetails}>
+            <div style={{ marginBottom: '1rem' }}>
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-gold)',
-                  fontSize: '0.8rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.3rem',
-                }}
+                style={{ background: 'none', border: 'none', color: 'var(--color-gold)', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
               >
-                <ChevronLeft size={14} /> Back to Date & Time
+                <ChevronLeft size={14} /> Back to Date &amp; Time
               </button>
             </div>
 
-            <h3
-              style={{
-                fontFamily: 'var(--font-serif-display)',
-                fontSize: '1.85rem',
-                color: 'var(--color-text-primary)',
-                marginBottom: '0.3rem',
-              }}
-            >
+            <h3 style={{ fontFamily: 'var(--font-serif-display)', fontSize: '1.85rem', color: 'var(--color-text-primary)', marginBottom: '0.3rem' }}>
               Your Contact Details
             </h3>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
-              Provide your details so our front-desk concierge can prepare your arrival.
+              We'll prepare your appointment details so you can send them directly to the studio.
             </p>
 
             <div className="form-group">
@@ -415,7 +352,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               />
             </div>
 
-            {/* Summary preview */}
+            {/* Summary */}
             <div
               style={{
                 padding: '1rem',
@@ -432,7 +369,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <strong style={{ color: 'var(--color-text-primary)' }}>{selectedService?.name}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
-                <span>Date & Time:</span>
+                <span>Date &amp; Time:</span>
                 <strong style={{ color: 'var(--color-gold)' }}>{selectedDate} at {selectedTime}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -442,27 +379,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
 
             <div style={{ display: 'flex', gap: '1rem' }}>
-              <button
-                type="button"
-                onClick={() => setStep(2)}
-                className="btn-secondary"
-                style={{ flex: 1, padding: '0.9rem' }}
-              >
+              <button type="button" onClick={() => setStep(2)} className="btn-secondary" style={{ flex: 1, padding: '0.9rem' }}>
                 Back
               </button>
-              <button
-                type="submit"
-                className="btn-primary"
-                style={{ flex: 2, padding: '0.9rem' }}
-              >
+              <button type="submit" className="btn-primary" style={{ flex: 2, padding: '0.9rem' }}>
                 <Sparkles size={16} />
-                <span>Confirm Appointment Request</span>
+                <span>Prepare My Appointment</span>
               </button>
             </div>
           </form>
         )}
 
-        {/* STEP 4: Confirmation State */}
+        {/* STEP 4: Details Ready — Send via WhatsApp */}
         {step === 4 && (
           <div style={{ textAlign: 'center', padding: '1rem 0' }}>
             <div
@@ -490,63 +418,62 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 marginBottom: '0.5rem',
               }}
             >
-              Appointment Request Received
+              Appointment Details Ready
             </h3>
 
             <p style={{ color: 'var(--color-text-secondary)', maxWidth: '460px', margin: '0 auto 1.75rem auto', fontSize: '0.92rem', lineHeight: 1.6 }}>
-              Thank you, <strong>{clientName}</strong>. Your requested session for <strong>{selectedService?.name}</strong> on <strong>{selectedDate} at {selectedTime}</strong> is queued for confirmation.
+              Your appointment details have been prepared, <strong style={{ color: 'var(--color-text-primary)' }}>{clientName}</strong>. Send them to SHE Beauty Studio on WhatsApp to complete your request and confirm availability.
             </p>
 
-            {/* Instant WhatsApp Action */}
+            {/* Primary: WhatsApp CTA */}
+            <a
+              href={whatsappDirectUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-whatsapp"
+              style={{ width: '100%', padding: '1.05rem', fontSize: '0.95rem', display: 'inline-flex', marginBottom: '1rem' }}
+            >
+              <MessageCircle size={18} />
+              <span>Send to Studio via WhatsApp</span>
+            </a>
+
+            {/* Booking summary recap */}
             <div
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.02)',
                 border: '1px solid var(--color-border-subtle)',
                 borderRadius: 'var(--radius-lg)',
-                padding: '1.5rem',
-                marginBottom: '1.75rem',
-              }}
-            >
-              <span style={{ fontSize: '0.8rem', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
-                Instant Confirmation Option
-              </span>
-              <p style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)', marginBottom: '1rem' }}>
-                Want faster priority booking? Send this request directly to our studio front desk via WhatsApp.
-              </p>
-
-              <a
-                href={whatsappDirectUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-whatsapp"
-                style={{ width: '100%' }}
-              >
-                <MessageCircle size={16} />
-                <span>Send Request via WhatsApp</span>
-              </a>
-            </div>
-
-            {/* Demo Note */}
-            <div
-              style={{
-                fontSize: '0.75rem',
-                color: 'var(--color-text-muted)',
-                backgroundColor: 'rgba(223, 190, 122, 0.06)',
-                padding: '0.75rem',
-                borderRadius: 'var(--radius-md)',
+                padding: '1.25rem',
                 marginBottom: '1.5rem',
+                fontSize: '0.82rem',
+                color: 'var(--color-text-secondary)',
+                textAlign: 'left',
               }}
             >
-              <ShieldCheck size={13} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle', color: 'var(--color-gold)' }} />
-              <span>Concept Prototype: In full production, this integrates with Fresha API or the studio's custom booking management dashboard.</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                <span>Service</span>
+                <strong style={{ color: 'var(--color-text-primary)' }}>{selectedService?.name}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                <span>Date &amp; Time</span>
+                <strong style={{ color: 'var(--color-gold)' }}>{selectedDate} at {selectedTime}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Studio</span>
+                <span>163 Ogudu Road, Ogudu, Lagos</span>
+              </div>
             </div>
+
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+              Your appointment is not yet confirmed. The studio will respond on WhatsApp to confirm your date and time.
+            </p>
 
             <button
               onClick={handleResetAndClose}
               className="btn-secondary"
               style={{ padding: '0.75rem 2rem', fontSize: '0.82rem' }}
             >
-              Close & Return to Studio
+              Close
             </button>
           </div>
         )}

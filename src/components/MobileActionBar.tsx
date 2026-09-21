@@ -4,9 +4,12 @@ import { BUSINESS_INFO } from '../data/businessData';
 
 interface MobileActionBarProps {
   onOpenBooking: () => void;
+  hidden?: boolean;
 }
 
-export const MobileActionBar: React.FC<MobileActionBarProps> = ({ onOpenBooking }) => {
+export const MobileActionBar: React.FC<MobileActionBarProps> = ({ onOpenBooking, hidden }) => {
+  if (hidden) return null;
+
   return (
     <aside
       aria-label="Quick contact actions"
@@ -20,6 +23,7 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({ onOpenBooking 
         backdropFilter: 'blur(16px)',
         borderTop: '1px solid rgba(223, 190, 122, 0.3)',
         padding: '0.65rem 1rem',
+        paddingBottom: 'calc(0.65rem + env(safe-area-inset-bottom, 0px))',
         boxShadow: '0 -8px 25px rgba(0, 0, 0, 0.5)',
       }}
       className="mobile-action-bar"
@@ -75,12 +79,7 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({ onOpenBooking 
         <button
           onClick={onOpenBooking}
           className="btn-primary"
-          style={{
-            width: '100%',
-            height: '44px',
-            padding: '0 1rem',
-            fontSize: '0.82rem',
-          }}
+          style={{ width: '100%', height: '44px', padding: '0 1rem', fontSize: '0.82rem' }}
         >
           <Sparkles size={14} />
           <span>Book Experience</span>
@@ -89,9 +88,7 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({ onOpenBooking 
 
       <style>{`
         @media (min-width: 768px) {
-          .mobile-action-bar {
-            display: none !important;
-          }
+          .mobile-action-bar { display: none !important; }
         }
       `}</style>
     </aside>

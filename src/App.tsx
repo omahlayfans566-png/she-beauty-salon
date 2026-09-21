@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { DemoBanner } from './components/DemoBanner';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ExperienceStory } from './components/ExperienceStory';
@@ -52,55 +51,55 @@ export const App: React.FC = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* 1. Private Concept Banner */}
-      <DemoBanner />
-
-      {/* 2. Sticky Luxury Navigation */}
+      {/* Sticky Luxury Navigation */}
       <Navbar onOpenBooking={() => handleOpenBooking()} />
 
       {/* Main Content Sections */}
       <main style={{ flex: 1 }}>
-        {/* 3. Cinematic Hero Section */}
+        {/* Hero Section */}
         <Hero
           onOpenBooking={() => handleOpenBooking()}
           onExploreServices={handleExploreServices}
         />
 
-        {/* 4. The SHE Experience & Brand Story */}
+        {/* The SHE Experience & Brand Story */}
         <ExperienceStory onOpenBooking={() => handleOpenBooking()} />
 
-        {/* 5. Signature Services Catalog */}
+        {/* Signature Services Catalog */}
         <ServicesSection onSelectService={handleSelectService} />
 
-        {/* 6. Specialized Treatments & Botanical Rituals */}
+        {/* Specialized Treatments & Botanical Rituals */}
         <RitualsSection onOpenBooking={(name) => handleOpenBooking(name)} />
 
-        {/* 7. Why SHE (5 Brand Pillars) */}
+        {/* Why SHE (5 Brand Pillars) */}
         <WhyUs />
 
-        {/* 8. The Studio Space & Atmosphere */}
+        {/* The Studio Space & Atmosphere */}
         <TheSpaceSection onOpenBooking={() => handleOpenBooking()} />
 
-        {/* 9. Verified Client Testimonials & Google 4.9 Rating */}
+        {/* Client Testimonials & Google Rating */}
         <TestimonialsSection />
 
-        {/* 10. Lookbook Gallery & Lightbox */}
+        {/* Lookbook Gallery & Lightbox */}
         <GallerySection />
 
-        {/* 11. High-Conversion Booking Section */}
+        {/* Booking Section */}
         <BookingSection onOpenBooking={() => handleOpenBooking()} />
 
-        {/* 12. Ogudu Location & Live Hours */}
+        {/* Location & Hours */}
         <LocationSection />
       </main>
 
-      {/* 13. Luxury Footer */}
+      {/* Footer */}
       <Footer onOpenBooking={() => handleOpenBooking()} />
 
-      {/* 14. Mobile Bottom Action Bar */}
-      <MobileActionBar onOpenBooking={() => handleOpenBooking()} />
+      {/* Mobile Bottom Action Bar — hidden when modal is open */}
+      <MobileActionBar
+        onOpenBooking={() => handleOpenBooking()}
+        hidden={isBookingModalOpen}
+      />
 
-      {/* 15. Interactive Multi-Step Booking Modal */}
+      {/* Multi-Step Booking Modal */}
       <BookingModal
         isOpen={isBookingModalOpen}
         onClose={() => {

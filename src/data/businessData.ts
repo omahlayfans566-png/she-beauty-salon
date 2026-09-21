@@ -1,7 +1,7 @@
 export interface ServiceItem {
   id: string;
   name: string;
-  category: 'hair' | 'nails-beauty' | 'wellness' | 'gentlemen';
+  category: 'hair' | 'nails-beauty' | 'wellness';
   description: string;
   duration: string;
   priceText: string;
@@ -13,7 +13,7 @@ export interface ServiceItem {
 export interface TestimonialItem {
   id: string;
   clientName: string;
-  source: 'Google Review' | 'Verified Client';
+  source: 'Google Review' | 'Client Review';
   rating: number;
   date: string;
   quote: string;
@@ -38,6 +38,10 @@ export interface OpeningHourDay {
   closeTime?: string; // 24h format e.g. "19:00"
 }
 
+// ---------------------------------------------------------------------------
+// BUSINESS INFO
+// Update rating.score and rating.reviewCount to match the live Google listing.
+// ---------------------------------------------------------------------------
 export const BUSINESS_INFO = {
   name: 'SHE Beauty Studio',
   shortName: 'SHE',
@@ -63,23 +67,22 @@ export const BUSINESS_INFO = {
     whatsappNumber: '2347076361197',
     whatsappDefaultMsg: 'Hello SHE Beauty Studio, I would like to inquire about booking an appointment.',
   },
+  // NOTE: Verify score and reviewCount against the live Google Business profile
+  // before publishing. Update these values to match exactly.
   rating: {
     score: 4.9,
     maxScore: 5.0,
     reviewCount: 69,
     platform: 'Google Reviews',
-    freshaPresence: true,
   },
   amenities: [
-    'Complimentary Chilled & Warm Beverages',
+    'Comfortable Client Seating',
     'High-Speed Wi-Fi',
-    'Serene Private Treatment Suites',
-    'Comfortable Ergonomic Seating',
-    'Dedicated Healthy Hair Consultations',
-    'Curated Afro-Luxe Ambiance',
+    'Dedicated Treatment Spaces',
+    'Attentive Client Care',
+    'Healthy Hair Consultations',
+    'Modern Afro-Luxe Ambiance',
   ],
-  disclaimer:
-    'This is a private, bespoke digital concept demo created to present to the owner of SHE Beauty Studio. All business data, addresses, and hours reflect verified public listings.',
 };
 
 export const OPENING_HOURS: OpeningHourDay[] = [
@@ -161,7 +164,7 @@ export const SIGNATURE_RITUALS = [
   },
   {
     id: 'biab-sculpt',
-    title: 'BIAB & Russian Cuticle Architecture',
+    title: 'BIAB & Cuticle Architecture',
     subtitle: 'Reinforced Natural Nails with Flawless Finish',
     description:
       'Builder in a Bottle (BIAB) overlays designed to strengthen brittle natural nails. Complemented by meticulous dry manicure techniques for a clean, editorial high-shine look that lasts 3–4 weeks.',
@@ -172,6 +175,11 @@ export const SIGNATURE_RITUALS = [
   },
 ];
 
+// ---------------------------------------------------------------------------
+// SERVICES
+// Prices shown as "Price on consultation" where not independently verified.
+// Update priceText values once confirmed with the studio owner.
+// ---------------------------------------------------------------------------
 export const SERVICES: ServiceItem[] = [
   // --- HAIR ---
   {
@@ -180,7 +188,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Deep moisture cleanse, steam infusion, thermal heat shield, and featherlight silk press finish with liquid shine.',
     duration: '1h 30m',
-    priceText: 'Sample Fresha Listing: ₦25,000*',
+    priceText: 'Price on consultation',
     isPopular: true,
     tags: ['Natural Hair', 'Hydration', 'Blowout'],
   },
@@ -190,7 +198,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Intensive restorative moisture bath under specialized ionic steam to revive dry, damaged, or brittle strands.',
     duration: '1h 15m',
-    priceText: 'Sample Fresha Listing: ₦18,000*',
+    priceText: 'Price on consultation',
     tags: ['Healthy Hair', 'Steam Therapy'],
   },
   {
@@ -199,7 +207,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Bio-protein fermented treatment to fortify weak hair follicles, restore cuticle smoothness, and stimulate growth.',
     duration: '1h 45m',
-    priceText: 'Sample Fresha Listing: ₦35,000*',
+    priceText: 'Price on consultation',
     isSignature: true,
     tags: ['CÉCRED', 'Bond Repair', 'Signature'],
   },
@@ -209,7 +217,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Tension-free, featherweight braids crafted with precision parting, dipped ends, and lightweight luxury extensions.',
     duration: '3h 30m',
-    priceText: 'Sample Fresha Listing: ₦30,000*',
+    priceText: 'Price on consultation',
     isPopular: true,
     tags: ['Protective Style', 'Tension-Free', 'Braids'],
   },
@@ -219,7 +227,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Scalp detox, deep botanical wash, neat precision retwisting, and lightweight nourishing oil seal.',
     duration: '2h 00m',
-    priceText: 'Sample Fresha Listing: ₦22,000*',
+    priceText: 'Price on consultation',
     tags: ['Locs', 'Scalp Care'],
   },
   {
@@ -228,7 +236,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Flawless melt, bleached knots, customized plucked hairline, braid down, and long-lasting secure styling.',
     duration: '2h 30m',
-    priceText: 'Sample Fresha Listing: ₦40,000*',
+    priceText: 'Price on consultation',
     isPopular: true,
     tags: ['Wigs', 'HD Lace', 'Installation'],
   },
@@ -238,7 +246,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Flat, comfortable braid foundation and secure extension attachment with natural leave-out blending.',
     duration: '3h 00m',
-    priceText: 'Sample Fresha Listing: ₦35,000*',
+    priceText: 'Price on consultation',
     tags: ['Extensions', 'Sew-in'],
   },
   {
@@ -247,7 +255,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Ultra-sleek molded high/low ponytail or high-fashion editorial updo with flawless edge styling.',
     duration: '1h 15m',
-    priceText: 'Sample Fresha Listing: ₦15,000*',
+    priceText: 'Price on consultation',
     tags: ['Styling', 'Sleek'],
   },
   {
@@ -256,7 +264,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Gentle scalp-protecting base, precision touch-up application, neutralizing bath, and reconstructive mask.',
     duration: '1h 45m',
-    priceText: 'Sample Fresha Listing: ₦20,000*',
+    priceText: 'Price on consultation',
     tags: ['Relaxer', 'Conditioning'],
   },
   {
@@ -265,7 +273,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'hair',
     description: 'Professional color formulation tailored to protect curl elasticity while delivering rich, multidimensional tone.',
     duration: '2h 30m',
-    priceText: 'Price available at booking',
+    priceText: 'Price on consultation',
     tags: ['Hair Color', 'Custom Tint'],
   },
 
@@ -276,7 +284,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'nails-beauty',
     description: 'Reinforces natural nail structure to encourage healthy growth with sophisticated nude or gloss finish.',
     duration: '1h 15m',
-    priceText: 'Sample Fresha Listing: ₦16,000*',
+    priceText: 'Price on consultation',
     isPopular: true,
     tags: ['BIAB', 'Natural Nail Care'],
   },
@@ -286,7 +294,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'nails-beauty',
     description: 'Aromatherapy foot soak, exfoliation, callus smoothing, cuticle refinement, hot towel wrap, and gel polish.',
     duration: '1h 30m',
-    priceText: 'Sample Fresha Listing: ₦18,000*',
+    priceText: 'Price on consultation',
     isPopular: true,
     tags: ['Pedicure', 'Spa Scrub'],
   },
@@ -296,16 +304,16 @@ export const SERVICES: ServiceItem[] = [
     category: 'nails-beauty',
     description: 'Detailed cuticle care, nail shaping, long-lasting LED gel polish, and nourishing vitamin hand massage.',
     duration: '1h 00m',
-    priceText: 'Sample Fresha Listing: ₦12,000*',
+    priceText: 'Price on consultation',
     tags: ['Manicure', 'Gel Polish'],
   },
   {
     id: 'beauty-glow-facial',
     name: 'Hydra Glow Rejuvenating Facial',
     category: 'nails-beauty',
-    description: 'Customized deep pore cleansing, gentle enzyme exfoliation, hydration infusion, and soothing lymphatic facial massage.',
+    description: 'Customized deep pore cleansing, gentle enzyme exfoliation, hydration infusion, and soothing facial massage.',
     duration: '1h 15m',
-    priceText: 'Sample Fresha Listing: ₦28,000*',
+    priceText: 'Price on consultation',
     isSignature: true,
     tags: ['Facials', 'Skin Glow'],
   },
@@ -315,16 +323,16 @@ export const SERVICES: ServiceItem[] = [
     category: 'nails-beauty',
     description: 'Facial architecture brow mapping, precision waxing or tweezing, and natural semi-permanent tinting.',
     duration: '45m',
-    priceText: 'Sample Fresha Listing: ₦10,000*',
+    priceText: 'Price on consultation',
     tags: ['Brows', 'Tinting'],
   },
   {
     id: 'beauty-body-waxing',
     name: 'Silk Touch Body Waxing',
     category: 'nails-beauty',
-    description: 'Hypoallergenic luxury hard wax for ultra-smooth skin with minimal irritation and soothing post-wax treatment.',
+    description: 'Hypoallergenic hard wax for ultra-smooth skin with minimal irritation and soothing post-wax treatment.',
     duration: '45m',
-    priceText: 'Price available at booking',
+    priceText: 'Price on consultation',
     tags: ['Waxing', 'Smooth Skin'],
   },
 
@@ -335,7 +343,7 @@ export const SERVICES: ServiceItem[] = [
     category: 'wellness',
     description: 'Full-body relaxation utilizing customized essential botanical oils to melt away stress and muscle fatigue.',
     duration: '1h 00m',
-    priceText: 'Sample Fresha Listing: ₦30,000*',
+    priceText: 'Price on consultation',
     isSignature: true,
     tags: ['Massage', 'Wellness', 'De-stress'],
   },
@@ -345,106 +353,83 @@ export const SERVICES: ServiceItem[] = [
     category: 'wellness',
     description: 'Focused pressure targeting postural strain and upper body tension for working Lagos professionals.',
     duration: '45m',
-    priceText: 'Sample Fresha Listing: ₦22,000*',
+    priceText: 'Price on consultation',
     tags: ['Deep Tissue', 'Back Relief'],
-  },
-
-  // --- GENTLEMEN ---
-  {
-    id: 'gentlemen-grooming-cut',
-    name: 'Executive Precision Cut & Beard Sculpt',
-    category: 'gentlemen',
-    description: 'Customized haircut, razor line detailing, hot towel treatment, and beard conditioning hydration.',
-    duration: '45m',
-    priceText: 'Sample Fresha Listing: ₦12,000*',
-    tags: ['Men Grooming', 'Beard Care'],
-  },
-  {
-    id: 'gentlemen-scalp-wash',
-    name: "Gentleman's Scalp Detox & Invigorating Wash",
-    category: 'gentlemen',
-    description: 'Clarifying wash, cooling tea tree scalp massage, steam treatment, and invigorating hydration.',
-    duration: '40m',
-    priceText: 'Sample Fresha Listing: ₦10,000*',
-    tags: ['Scalp Detox', 'Men'],
-  },
-  {
-    id: 'gentlemen-hand-foot',
-    name: "Gentleman's Executive Hand & Foot Therapy",
-    category: 'gentlemen',
-    description: 'Clean nail trimming, cuticle cleanup, scrub, and deep moisturizing massage for hands and feet.',
-    duration: '1h 00m',
-    priceText: 'Sample Fresha Listing: ₦15,000*',
-    tags: ['Men Pedicure', 'Grooming'],
   },
 ];
 
+// ---------------------------------------------------------------------------
+// TESTIMONIALS
+// These are representative client sentiments based on publicly available
+// Google Business reviews. Names are abbreviated for privacy.
+// Replace with directly verified reviews — including real dates — before launch.
+// ---------------------------------------------------------------------------
 export const TESTIMONIALS: TestimonialItem[] = [
   {
     id: 't-1',
     clientName: 'Adebisi T.',
     source: 'Google Review',
     rating: 5,
-    date: 'Verified Client',
+    date: '2024',
     quote:
       'Fantastic atmosphere, staff provide excellent services with a smile. Definitely recommend to anyone who values their hair health and quality time.',
     serviceTag: 'Healthy Hair & Styling',
-    highlight: '“Fantastic atmosphere and friendly staff”',
+    highlight: '"Fantastic atmosphere and friendly staff"',
   },
   {
     id: 't-2',
     clientName: 'Nkechi O.',
     source: 'Google Review',
     rating: 5,
-    date: 'Verified Client',
+    date: '2024',
     quote:
       'The service was awesome. I loved the customer service from the moment I walked into the studio until I stepped out.',
-    serviceTag: 'CÉCRED Hair Ritual',
-    highlight: '“Awesome service and warm welcome”',
+    serviceTag: 'Hair Treatment',
+    highlight: '"Awesome service and warm welcome"',
   },
   {
     id: 't-3',
     clientName: 'Folake A.',
     source: 'Google Review',
     rating: 5,
-    date: 'Verified Client',
+    date: '2024',
     quote:
       'Warm, friendly and super efficient. You can tell the stylists really understand natural hair care and listen to what you want.',
     serviceTag: 'Silk Press & Steam',
-    highlight: '“Warm, friendly and super efficient”',
+    highlight: '"Warm, friendly and super efficient"',
   },
   {
     id: 't-4',
     clientName: 'Chioma E.',
     source: 'Google Review',
     rating: 5,
-    date: 'Verified Client',
+    date: '2024',
     quote:
-      'Great service, good ambiance. I loved my experience here. It is so rare to find a mainland salon that feels this serene and luxury.',
-    serviceTag: 'Knotless Braids & Nails',
-    highlight: '“Good ambiance & mainland luxury”',
+      'Great service, good ambiance. I loved my experience here. It is so rare to find a mainland salon that feels this serene and luxurious.',
+    serviceTag: 'Braids & Nails',
+    highlight: '"Good ambiance & mainland luxury"',
   },
   {
     id: 't-5',
     clientName: 'Zainab M.',
     source: 'Google Review',
     rating: 5,
-    date: 'Verified Client',
+    date: '2024',
     quote:
       'The ladies are absolutely lovely, welcoming, and so courteous. My BIAB nails and hair steam were done to perfection.',
-    serviceTag: 'BIAB Manicure & Spa',
-    highlight: '“Lovely, welcoming & so courteous”',
+    serviceTag: 'BIAB Manicure',
+    highlight: '"Lovely, welcoming & so courteous"',
   },
   {
     id: 't-6',
     clientName: 'Temi K.',
     source: 'Google Review',
     rating: 5,
-    date: 'Verified Client',
+    date: '2024',
     quote:
-      'A true sanctuary on Ogudu Road. The attention to detail, complimentary refreshments, and gentle hands make this my go-to beauty studio.',
+      'The attention to detail, friendly welcome, and gentle hands make this my go-to beauty studio on the Mainland.',
     serviceTag: 'Loc Retwist & Scalp Care',
-    highlight: '“My go-to beauty studio in Ogudu”',
+    highlight: '"My go-to beauty studio on the Mainland"',
   },
 ];
 
@@ -462,14 +447,14 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: 'Precision Luxury Knotless Braids',
     category: 'hair',
     imageUrl: '/images/hair-braids.jpg',
-    description: 'Featherweight knotless braids with gold hair cuffs and immaculate clean parting.',
+    description: 'Featherweight knotless braids with immaculate clean parting.',
   },
   {
     id: 'g-3',
-    title: 'Modern Afro-Luxe Studio Sanctuary',
+    title: 'Modern Studio Sanctuary',
     category: 'space',
     imageUrl: '/images/studio-interior.jpg',
-    description: 'Arched champagne bronze mirrors, plush velvet seating, and calming ambient lighting.',
+    description: 'A warm, calming atmosphere designed for an unhurried beauty experience.',
     featured: true,
   },
   {
@@ -491,7 +476,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: 'Sculpted Loc Artistry & Care',
     category: 'hair',
     imageUrl: '/images/locs-artistry.jpg',
-    description: 'Hydrated, healthy locs adorned with bronze details and scalp rejuvenation.',
+    description: 'Hydrated, healthy locs with precision retwist and scalp rejuvenation.',
   },
 ];
 
@@ -520,66 +505,38 @@ export function buildWhatsAppLink(serviceName?: string, date?: string, time?: st
 }
 
 export function getStudioStatus(): { isOpen: boolean; statusText: string; nextOpenText: string } {
-  // Lagos is WAT (UTC+1)
   const now = new Date();
   const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-  const lagosTime = new Date(utc + 3600000); // UTC+1
+  const lagosTime = new Date(utc + 3600000); // WAT = UTC+1
 
-  const dayOfWeek = lagosTime.getDay(); // 0 = Sunday, 1 = Monday, ... 6 = Saturday
+  const dayOfWeek = lagosTime.getDay(); // 0 = Sunday … 6 = Saturday
   const currentHour = lagosTime.getHours();
   const currentMinute = lagosTime.getMinutes();
   const currentTimeDec = currentHour + currentMinute / 60;
 
-  // Monday = 1 (Closed)
   if (dayOfWeek === 1) {
-    return {
-      isOpen: false,
-      statusText: 'Closed Today (Monday)',
-      nextOpenText: 'Opens Tuesday at 9:00 AM',
-    };
+    return { isOpen: false, statusText: 'Closed Today (Monday)', nextOpenText: 'Opens Tuesday at 9:00 AM' };
   }
 
-  // Sunday = 0 (12:30 PM to 7:00 PM)
   if (dayOfWeek === 0) {
-    const openTime = 12.5; // 12:30 PM
-    const closeTime = 19.0; // 7:00 PM
+    const openTime = 12.5;
+    const closeTime = 19.0;
     if (currentTimeDec >= openTime && currentTimeDec < closeTime) {
-      return {
-        isOpen: true,
-        statusText: 'Open Today until 7:00 PM',
-        nextOpenText: '',
-      };
+      return { isOpen: true, statusText: 'Open Today until 7:00 PM', nextOpenText: '' };
     } else if (currentTimeDec < openTime) {
-      return {
-        isOpen: false,
-        statusText: 'Opening Today at 12:30 PM',
-        nextOpenText: 'Opens at 12:30 PM',
-      };
+      return { isOpen: false, statusText: 'Opening Today at 12:30 PM', nextOpenText: 'Opens at 12:30 PM' };
     } else {
-      return {
-        isOpen: false,
-        statusText: 'Closed for the Evening',
-        nextOpenText: 'Opens Tuesday at 9:00 AM',
-      };
+      return { isOpen: false, statusText: 'Closed for the Evening', nextOpenText: 'Opens Tuesday at 9:00 AM' };
     }
   }
 
-  // Tuesday to Saturday (9:00 AM to 7:00 PM)
   const openTime = 9.0;
   const closeTime = 19.0;
 
   if (currentTimeDec >= openTime && currentTimeDec < closeTime) {
-    return {
-      isOpen: true,
-      statusText: 'Open Today until 7:00 PM',
-      nextOpenText: '',
-    };
+    return { isOpen: true, statusText: 'Open Today until 7:00 PM', nextOpenText: '' };
   } else if (currentTimeDec < openTime) {
-    return {
-      isOpen: false,
-      statusText: 'Opening Today at 9:00 AM',
-      nextOpenText: 'Opens at 9:00 AM',
-    };
+    return { isOpen: false, statusText: 'Opening Today at 9:00 AM', nextOpenText: 'Opens at 9:00 AM' };
   } else {
     const nextDayIsSunday = dayOfWeek === 6;
     return {

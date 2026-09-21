@@ -35,7 +35,7 @@ export const ExperienceStory: React.FC<ExperienceStoryProps> = ({ onOpenBooking 
           }}
         >
           {/* Left Column: Image with Luxury Framing */}
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', paddingBottom: '3.5rem' }}>
             <div
               style={{
                 borderRadius: '24px',
@@ -47,6 +47,7 @@ export const ExperienceStory: React.FC<ExperienceStoryProps> = ({ onOpenBooking 
               <img
                 src="/images/ritual-treatment.jpg"
                 alt="SHE Beauty Studio hair steam treatment and scalp relaxation in Ogudu Lagos"
+                loading="lazy"
                 style={{
                   width: '100%',
                   height: '460px',
@@ -60,14 +61,13 @@ export const ExperienceStory: React.FC<ExperienceStoryProps> = ({ onOpenBooking 
             <div
               style={{
                 position: 'absolute',
-                bottom: '-1.5rem',
+                bottom: 0,
                 right: '1.5rem',
                 left: '1.5rem',
                 padding: '1.25rem 1.5rem',
                 borderRadius: 'var(--radius-md)',
-                backgroundColor: 'rgba(12, 10, 9, 0.94)',
+                backgroundColor: 'rgba(12, 10, 9, 0.96)',
                 border: '1px solid var(--color-border-gold)',
-                backdropFilter: 'blur(16px)',
                 boxShadow: 'var(--shadow-floating)',
               }}
             >
@@ -111,7 +111,7 @@ export const ExperienceStory: React.FC<ExperienceStoryProps> = ({ onOpenBooking 
                 { title: 'Healthy Hair First', desc: 'Hydration steam & bond-protecting formulas on every texture.' },
                 { title: 'Tension-Free Artistry', desc: 'Gentle protective braid & loc techniques that protect your edges.' },
                 { title: 'Attentive Hospitality', desc: 'Warm greetings, dedicated attention, and unhurried appointments.' },
-                { title: 'Pristine Hygiene', desc: 'Hospital-grade tool sterilization and pristine salon stations.' },
+                { title: 'Pristine Hygiene', desc: 'Professional hygiene and sanitation practices across all treatments and styling stations.' },
               ].map((item, idx) => (
                 <div
                   key={idx}
@@ -161,7 +161,7 @@ export const ExperienceStory: React.FC<ExperienceStoryProps> = ({ onOpenBooking 
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', color: 'var(--color-text-secondary)', fontSize: '0.82rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <Coffee size={15} style={{ color: 'var(--color-gold)' }} />
-                  <span>Artisan Teas & Chilled Refreshments</span>
+                  <span>Comfortable Client Experience</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <Wifi size={15} style={{ color: 'var(--color-gold)' }} />
@@ -169,7 +169,7 @@ export const ExperienceStory: React.FC<ExperienceStoryProps> = ({ onOpenBooking 
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <ShieldCheck size={15} style={{ color: 'var(--color-gold)' }} />
-                  <span>Private Treatment Suites</span>
+                  <span>Dedicated Treatment Spaces</span>
                 </div>
               </div>
             </div>

@@ -10,6 +10,9 @@ export const RitualsSection: React.FC<RitualsSectionProps> = ({ onOpenBooking })
   const [activeRitualIndex, setActiveRitualIndex] = useState(0);
   const currentRitual = SIGNATURE_RITUALS[activeRitualIndex];
 
+  // Short labels for tabs to prevent wrapping on small screens
+  const tabLabels = ['CÉCRED Ritual', 'Loc Sanctuary', 'Silk Press', 'BIAB Nails'];
+
   return (
     <section
       id="rituals"
@@ -35,41 +38,54 @@ export const RitualsSection: React.FC<RitualsSectionProps> = ({ onOpenBooking })
           </p>
         </div>
 
-        {/* Ritual Selector Navigation */}
+        {/* Ritual Selector Navigation — horizontally scrollable on mobile */}
         <div
           style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '0.75rem',
+            width: '100%',
+            overflowX: 'auto',
+            WebkitOverflowScrolling: 'touch' as React.CSSProperties['WebkitOverflowScrolling'],
+            scrollbarWidth: 'none' as React.CSSProperties['scrollbarWidth'],
+            msOverflowStyle: 'none' as React.CSSProperties['msOverflowStyle'],
             marginBottom: '3.5rem',
+            padding: '0.25rem 0',
           }}
+          className="rituals-tab-scroll"
         >
-          {SIGNATURE_RITUALS.map((ritual, idx) => (
-            <button
-              key={ritual.id}
-              onClick={() => setActiveRitualIndex(idx)}
-              style={{
-                padding: '0.75rem 1.4rem',
-                borderRadius: 'var(--radius-full)',
-                fontSize: '0.82rem',
-                fontWeight: 600,
-                letterSpacing: '0.06em',
-                transition: 'all var(--transition-smooth)',
-                backgroundColor:
-                  activeRitualIndex === idx ? 'var(--color-gold)' : 'rgba(255, 255, 255, 0.03)',
-                color: activeRitualIndex === idx ? '#0A0807' : 'var(--color-text-secondary)',
-                border: `1px solid ${
-                  activeRitualIndex === idx ? 'var(--color-gold)' : 'var(--color-border-subtle)'
-                }`,
-                boxShadow:
-                  activeRitualIndex === idx ? '0 4px 20px rgba(223, 190, 122, 0.3)' : 'none',
-              }}
-            >
-              {ritual.title}
-            </button>
-          ))}
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.65rem',
+              width: 'max-content',
+              margin: '0 auto',
+            }}
+          >
+            {SIGNATURE_RITUALS.map((ritual, idx) => (
+              <button
+                key={ritual.id}
+                onClick={() => setActiveRitualIndex(idx)}
+                style={{
+                  padding: '0.7rem 1.3rem',
+                  borderRadius: 'var(--radius-full)',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.06em',
+                  whiteSpace: 'nowrap',
+                  transition: 'all var(--transition-smooth)',
+                  backgroundColor:
+                    activeRitualIndex === idx ? 'var(--color-gold)' : 'rgba(255, 255, 255, 0.03)',
+                  color: activeRitualIndex === idx ? '#0A0807' : 'var(--color-text-secondary)',
+                  border: `1px solid ${activeRitualIndex === idx ? 'var(--color-gold)' : 'var(--color-border-subtle)'
+                    }`,
+                  boxShadow:
+                    activeRitualIndex === idx ? '0 4px 20px rgba(223, 190, 122, 0.3)' : 'none',
+                }}
+              >
+                {tabLabels[idx] ?? ritual.title}
+              </button>
+            ))}
+          </div>
         </div>
+        <style>{`.rituals-tab-scroll::-webkit-scrollbar { display: none; }`}</style>
 
         {/* Featured Ritual Showcase */}
         <div
@@ -93,6 +109,7 @@ export const RitualsSection: React.FC<RitualsSectionProps> = ({ onOpenBooking })
               <img
                 src={currentRitual.image}
                 alt={currentRitual.title}
+                loading="lazy"
                 style={{
                   width: '100%',
                   height: '100%',
@@ -121,7 +138,7 @@ export const RitualsSection: React.FC<RitualsSectionProps> = ({ onOpenBooking })
             </div>
 
             {/* Right Detailed Narrative */}
-            <div style={{ padding: '3rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div style={{ padding: 'clamp(1.5rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2.5rem)', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div>
                 <span
                   style={{
